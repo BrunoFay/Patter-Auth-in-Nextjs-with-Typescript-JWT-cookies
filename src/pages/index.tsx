@@ -3,16 +3,15 @@ import { FormEvent, useContext, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 
 export default function Home() {
-  const { signIn,t,isAuthenticated } = useContext(AuthContext)
+  const { signIn,isAuthenticated } = useContext(AuthContext)
   const [email,setEmail ] = useState('')
   const [password,setPassword ] = useState('')
 
  async function handlesSession(e:FormEvent){
     e.preventDefault()
     const data = {email,password}
-    /* await signIn(data) */
+    await signIn(data)
 
-    console.log(isAuthenticated)
   }
   return (
     <form onSubmit={handlesSession} className='' style={{display:'flex',justifyContent:'center', flexDirection:'column',alignItems:'center',margin: '10% 0px 0px 0px'}}>
