@@ -41,7 +41,7 @@ Api.interceptors.response.use(
               refreshToken,
             })
             .then((response) => {
-              const { token } = response.data
+              const { token,refreshToken } = response.data
 
               setCookie(undefined, 'nextauth.token', token, {
                 maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -50,7 +50,7 @@ Api.interceptors.response.use(
               setCookie(
                 undefined,
                 'nextauth.refreshToken',
-                response.data.refreshToken,
+                refreshToken,
                 {
                   maxAge: 60 * 60 * 24 * 30, // 30 days
                   path: '/',

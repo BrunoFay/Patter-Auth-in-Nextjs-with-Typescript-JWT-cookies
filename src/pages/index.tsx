@@ -1,6 +1,7 @@
 
 import { FormEvent, useContext, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
+import { withSSRGuest } from '../helpers/withSSRGuest'
 
 export default function Home() {
   const { signIn,isAuthenticated } = useContext(AuthContext)
@@ -21,3 +22,5 @@ export default function Home() {
     </form>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async(ctx)=>({ props:{} }))

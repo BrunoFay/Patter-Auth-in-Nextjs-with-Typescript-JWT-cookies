@@ -78,7 +78,7 @@ export function AuthProvider({children}:{children:ReactNode}){
 
       Router.push('/dashboard')
     } catch (error) {
-      console.log(error)
+      signOut()
     }
   }
 
