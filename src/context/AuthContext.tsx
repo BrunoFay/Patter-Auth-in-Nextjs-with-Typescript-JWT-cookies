@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { Api } from "../libs/axios";
 import {destroyCookie, parseCookies, setCookie} from 'nookies'
 import Router from "next/router";
+import { Api } from "../libs/axiosClient";
 
 type AuthSignIn = {
    email:string
