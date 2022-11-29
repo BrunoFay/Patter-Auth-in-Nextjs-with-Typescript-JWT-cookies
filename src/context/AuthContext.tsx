@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { Api } from "../libs/axios";
-import {parseCookies, setCookie} from 'nookies'
-import { useRouter } from "next/router";
+import {destroyCookie, parseCookies, setCookie} from 'nookies'
+import Router from "next/router";
 
 type AuthSignIn = {
    email:string
@@ -22,10 +22,17 @@ type AuthContext={
 
 export const AuthContext = createContext({} as AuthContext)
 
+export function signOut() {
+  destroyCookie(undefined, 'nextauth.token')
+  destroyCookie(undefined, 'nextauth.refreshToken')
+
+  Router.push('/')
+}
+
 export function AuthProvider({children}:{children:ReactNode}){
   const [user,setUser]=useState<User>()
   const isAuthenticated = !!user
-  const router = useRouter()
+
   const {'nextauth.token':token} = parseCookies()
 
   useEffect(()=>{
@@ -69,7 +76,7 @@ export function AuthProvider({children}:{children:ReactNode}){
 
       Api.defaults.headers['Authorization']= `Bearer ${token}`
 
-      router.push('/dashboard')
+      Router.push('/dashboard')
     } catch (error) {
       console.log(error)
     }
