@@ -20,11 +20,14 @@ type AuthContext={
   isAuthenticated:boolean
 }
 
+const authChannel = new BroadcastChannel('auth')
 export const AuthContext = createContext({} as AuthContext)
 
 export function signOut() {
   destroyCookie(undefined, 'nextauth.token')
   destroyCookie(undefined, 'nextauth.refreshToken')
+
+  authChannel.postMessage('SignOut')
 
   Router.push('/')
 }
@@ -36,8 +39,20 @@ export function AuthProvider({children}:{children:ReactNode}){
   const {'nextauth.token':token} = parseCookies()
 
   useEffect(()=>{
-    if(token){
+    authChannel.onmessage=(message)=>{
+      switch (message.data) {
+        case 'SignOut':
+          signOut()
+          break;
 
+        default:
+          break;
+      }
+    }
+  },[])
+
+  useEffect(()=>{
+    if(token){
       Api.get('/me').then(res=>{
         const {email,permissions,roles} = res.data
         setUser({email,permissions,roles})
